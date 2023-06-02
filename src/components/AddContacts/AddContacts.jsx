@@ -47,6 +47,7 @@ export class AddContacts extends Component {
             Name
           </label>
           <input
+            autoFocus
             type="text"
             name="name"
             placeholder="Name"
