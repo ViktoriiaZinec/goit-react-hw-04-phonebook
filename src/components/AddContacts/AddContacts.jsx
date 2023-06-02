@@ -7,7 +7,6 @@ export const AddContacts = ({ createUser }) => {
   const [number, setNumber] = useState('');
 
   const handleChangeName = ({ target }) => {
-    console.log('changeName', target);
     setName(target.value);
   };
   const handleChangeNumber = ({ target }) => {
@@ -20,7 +19,7 @@ export const AddContacts = ({ createUser }) => {
     setName('');
     setNumber('');
   };
-  console.log(createUser);
+
   return (
     <form className={css.form} onSubmit={handleSubmit}>
       <div className={css.form_name}>
