@@ -5,31 +5,23 @@ import { ContactsList } from './ContactsList/ContactsList';
 import { Filter } from './Filter/Filter';
 
 export const App = () => {
-  const [contacts, setContacts] = useState([]);
+  const [contacts, setContacts] = useState(getStorage);
   const [filterName, setFilterName] = useState('');
 
-  useEffect(() => {
-    if (contacts.length === 0) {
-      console.log('use c', contacts);
-      const newContactsJSON = localStorage.getItem('contacts');
-      try {
-        const newContacts = JSON.parse(newContactsJSON);
-        if (newContacts !== '') {
-          console.log(
-            'newContacts :>> ',
-            newContacts,
-            typeof newContacts,
-            '',
-            newContacts === '""'
-          );
-          setContacts(newContacts);
-        }
-      } catch (e) {
-        console.log(e);
+  function getStorage() {
+    const newContactsJSON = localStorage.getItem('contacts');
+    try {
+      const newContacts = JSON.parse(newContactsJSON);
+      if (newContacts !== '') {
+        setContacts(newContacts);
       }
-    } else {
-      localStorage.setItem('contacts', JSON.stringify(contacts));
+    } catch (e) {
+      return [];
     }
+  }
+
+  useEffect(() => {
+    localStorage.setItem('contacts', JSON.stringify(contacts));
   }, [contacts]);
 
   const createUser = (name, number) => {
@@ -38,17 +30,15 @@ export const App = () => {
       number,
       id: nanoid(),
     };
-    console.log('createUser', name, number);
 
     const isExist = (name, number, contacts) => {
-      console.log(contacts);
       return contacts.some(
         contact =>
           contact.name.toLowerCase() === name.toLowerCase() ||
           contact.number === number
       );
     };
-    console.log('contacts', contacts, typeof contacts);
+    // console.log('contacts', contacts, typeof contacts);
 
     if (isExist(name, number, contacts)) {
       return alert(name + ' is already in contact list');
@@ -59,7 +49,6 @@ export const App = () => {
 
   const deleteUser = id => {
     setContacts(contacts => contacts.filter(contact => contact.id !== id));
-    console.log('id2 :>> ', id);
   };
 
   const createFilter = filter => {
@@ -71,7 +60,6 @@ export const App = () => {
       contact.name.toLowerCase().startsWith(filterName.toLowerCase().trim())
     );
 
-  // http://localhost:3000/goit-react-hw-04-phonebook
   return (
     <div>
       <h1>Phonebook</h1>
