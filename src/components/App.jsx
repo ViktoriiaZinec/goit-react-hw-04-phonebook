@@ -5,21 +5,10 @@ import { ContactsList } from './ContactsList/ContactsList';
 import { Filter } from './Filter/Filter';
 
 export const App = () => {
-  const [contacts, setContacts] = useState(getStorage);
+  const [contacts, setContacts] = useState(
+    JSON.parse(localStorage.getItem('contacts')) || []
+  );
   const [filterName, setFilterName] = useState('');
-
-  function getStorage() {
-    const newContactsJSON = localStorage.getItem('contacts');
-    try {
-      const newContacts = JSON.parse(newContactsJSON);
-      if (newContacts !== '') {
-        setContacts(newContacts);
-      }
-    } catch (e) {
-      return [];
-    }
-  }
-
   useEffect(() => {
     localStorage.setItem('contacts', JSON.stringify(contacts));
   }, [contacts]);
@@ -65,7 +54,7 @@ export const App = () => {
       <h1>Phonebook</h1>
       <AddContacts createUser={createUser} />
       <h2>Contacts</h2>
-      <Filter setFilter={createFilter} />
+      <Filter setFilter={createFilter} filterName={filterName} />
       <ContactsList contacts={filteredContacts} deleteUser={deleteUser} />
     </div>
   );

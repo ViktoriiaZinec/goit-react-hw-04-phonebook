@@ -1,7 +1,7 @@
 import css from './Filter.module.css';
 import propTypes from 'prop-types';
 
-export function Filter({ setFilter }) {
+export function Filter({ setFilter, filterName }) {
   const handleFilterChange = evt => {
     evt.preventDefault();
     setFilter(evt.target.value);
@@ -13,6 +13,7 @@ export function Filter({ setFilter }) {
         className={css.input_find}
         type="text"
         onChange={handleFilterChange}
+        value={filterName}
       />
     </div>
   );
